@@ -1,33 +1,24 @@
 // import Input from '../components/input/input'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import HighChart from '../components/highChart/HighChart'
 import axios from 'axios'
 
 function Form() {
     const [title, setTitle] = useState('Title')
-    const [series, changeSeries] = useState({
-        series: []
-    })
-    const [xAxis, changeXAxis] = useState({
-        xAxis: []
-    })
+    const [series, changeSeries] = useState({ series: [] })
+    const [xAxis, changeXAxis] = useState({ xAxis: [] })
 
     const handleChangeTilte = (e) => {
         setTitle(e.target.value)
     }
-
-    useEffect(() => {
-        getRecentThirtyDays()
-    }, [])
-
-    async function getRecentThirtyDays () {
+    const getRecentThirtyDays = useCallback (async () => {  // 使外部func 可使用在 useEffect
         const { data: result } = await axios.post('api/cosmos/siteinfo/getRecentThirtyDays', {
             fId: "f001"
         })
         recentThirtyDays(result)
-    }
+    }, [])
 
-    function recentThirtyDays (result) {
+    const recentThirtyDays = (result) => {
         changeXAxis(result.data.map(x => x.date))
         changeSeries(
             [
@@ -52,6 +43,11 @@ function Form() {
             ]
         )
     }
+
+    useEffect(() => {
+        getRecentThirtyDays()
+    }, [getRecentThirtyDays])
+
     return (
         <div>
             <h2>HighChartDemo</h2>
