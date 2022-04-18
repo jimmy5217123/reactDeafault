@@ -69,7 +69,7 @@ const HighChart = (props) => {
           }
         ],
         xAxis: [{
-          categories: props.xAxis,
+          categories: [],
           crosshair: true,
           index: 0,
           isX: true,
@@ -89,7 +89,7 @@ const HighChart = (props) => {
         },
         series: [
           {
-            data: props.data,
+            data: [],
             type: 'column',
             name: '',
             yAxis: 0
@@ -146,16 +146,55 @@ const HighChart = (props) => {
         document.title = `You clicked ${count} times`
     })
 
-    const aaa = () => {
-        const obj = {
-            title: { text: props.title }, series: [{ data: [1, 4, 99] }]
+    useEffect(() => {
+      changeOptions((prevOptions) => {
+        return {
+          ...prevOptions,
+          xAxis: [{
+            categories: props.data.xAxis,
+            crosshair: true,
+            index: 0,
+            isX: true,
+            gridLineWidth: 0
+          }],
+          series: [
+            {
+              data: props.data.acp,
+              type: 'column',
+              name: 'acp',
+              yAxis: 0
+            },
+            {
+              data: props.data.pr,
+              type: 'line',
+              name: 'pr',
+              yAxis: 2
+            },
+            {
+              data: props.data.irr,
+              type: 'line',
+              name: 'irr',
+              yAxis: 1
+            },
+          ]
         }
-        changeOptions(obj)
-    }
+      })
+    }, [props.data])
+
+    useEffect(() => {
+      changeOptions((prevOptions) => {
+        return {
+          ...prevOptions,
+          title: {
+            text: props.title
+          }
+        }
+      })
+    }, [props.title])
+
     return (
         <div>
             <HighchartsReact highcharts={Highcharts} options={options}/>
-            <button onClick={() => aaa()}>aaaa</button>
             <button onClick={() => setCount(count + 1)}>aaaa</button>
         </div>
     )
