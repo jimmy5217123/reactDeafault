@@ -21,7 +21,6 @@ const HighChart = (props) => {
         legend: {
           align: 'right',
           layout: 'vertical',
-          // floating: true,
           verticalAlign: 'top',
           x: 0,
           y: 30
@@ -51,7 +50,7 @@ const HighChart = (props) => {
               enabled: false
             },
             title: '',
-            max: 5,
+            max: 350,
             min: 0,
             opposite: false,
             gridLineWidth: 0
@@ -69,7 +68,7 @@ const HighChart = (props) => {
           }
         ],
         xAxis: [{
-          categories: [],
+          categories: props.xAxis,
           crosshair: true,
           index: 0,
           isX: true,
@@ -87,32 +86,7 @@ const HighChart = (props) => {
             }
           }
         },
-        series: [
-          {
-            data: [],
-            type: 'column',
-            name: '',
-            yAxis: 0
-          },
-          {
-            data: [],
-            type: 'line',
-            name: '',
-            yAxis: 1
-          },
-          {
-            data: [],
-            type: 'line',
-            name: '',
-            yAxis: 2
-          },
-          {
-            data: [],
-            type: 'line',
-            name: '',
-            yAxis: 3
-          }
-        ],
+        series: props.series,
         lang: {
           noData: '現在沒有資料'
         },
@@ -139,52 +113,27 @@ const HighChart = (props) => {
           }]
         }
       })
-    const [count, setCount] = useState(0)
-
 
     useEffect(() => {
-        document.title = `You clicked ${count} times`
-    })
-
-    useEffect(() => {
-      changeOptions((prevOptions) => {
+      changeOptions((options) => {
         return {
-          ...prevOptions,
+          ...options,
           xAxis: [{
-            categories: props.data.xAxis,
+            categories: props.xAxis,
             crosshair: true,
             index: 0,
             isX: true,
             gridLineWidth: 0
           }],
-          series: [
-            {
-              data: props.data.acp,
-              type: 'column',
-              name: 'acp',
-              yAxis: 0
-            },
-            {
-              data: props.data.pr,
-              type: 'line',
-              name: 'pr',
-              yAxis: 2
-            },
-            {
-              data: props.data.irr,
-              type: 'line',
-              name: 'irr',
-              yAxis: 1
-            },
-          ]
+          series: props.series
         }
       })
-    }, [props.data])
+    }, [props])
 
     useEffect(() => {
-      changeOptions((prevOptions) => {
+      changeOptions((options) => {
         return {
-          ...prevOptions,
+          ...options,
           title: {
             text: props.title
           }
@@ -193,10 +142,9 @@ const HighChart = (props) => {
     }, [props.title])
 
     return (
-        <div>
-            <HighchartsReact highcharts={Highcharts} options={options}/>
-            <button onClick={() => setCount(count + 1)}>aaaa</button>
-        </div>
+      <div>
+        <HighchartsReact highcharts={Highcharts} options={options}/>
+      </div>
     )
 }
 
