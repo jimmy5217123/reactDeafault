@@ -24,6 +24,10 @@ function Form() {
         const { data: result } = await axios.post('api/cosmos/siteinfo/getRecentThirtyDays', {
             fId: "f001"
         })
+        recentThirtyDays(result)
+    }
+
+    function recentThirtyDays (result) {
         changeXAxis(result.data.map(x => x.date))
         changeSeries(
             [
@@ -48,13 +52,12 @@ function Form() {
             ]
         )
     }
-
     return (
         <div>
-            <h1>Form</h1>
+            <h2>HighChartDemo</h2>
             <input onChange={(e) => handleChangeTilte(e)} value={title}></input>
             <HighChart title={title} series={series} xAxis={xAxis}></HighChart>
-            <HighChart title={title} series={[{ data: [45], type: 'column' }]} xAxis={['22']}></HighChart>
+            <HighChart title={title} series={[{ data: [45, 66], type: 'column' }]} xAxis={['22', '77']}></HighChart>
         </div>
     )
 }
