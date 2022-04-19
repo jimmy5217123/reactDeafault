@@ -6,16 +6,12 @@
   background-color: #dddddd;
 }
 
-.navbar li {
-  float: left;
-}
-
 .navbar li a {
   display: block;
   padding: 8px;
-  background-color: #dddddd;
+  background-color: #d8acac;
 }
 
 .active {
-  color: #ffffff;
+  color: #63615a;
 }

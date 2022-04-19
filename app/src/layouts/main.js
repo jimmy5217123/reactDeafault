@@ -8,13 +8,15 @@ function Main() {
     return (
         <div>
             <BrowserRouter>
-                <Navbar></Navbar>
-                <div className="content">
-                    <Routes>
-                        <Route path="/" element={<Home />}/>
-                        <Route path="/highChartDemo" element={<HighChartDemo />}/>
-                        {/* <Route path="/about" element={<About />}/> */}
-                    </Routes>
+                <div style={{display: 'flex'}}>
+                    <Navbar></Navbar>
+                    <div className="content" style={{width : '100%', height: '97.9vh', margin: '10px'}}>
+                        <Routes>
+                            <Route path="/" element={<Home />}/>
+                            <Route path="/highChartDemo" element={<HighChartDemo />}/>
+                            {/* <Route path="/about" element={<About />}/> */}
+                        </Routes>
+                    </div>
                 </div>
             </BrowserRouter>
         </div>

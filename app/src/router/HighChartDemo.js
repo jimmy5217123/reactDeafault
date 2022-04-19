@@ -12,9 +12,7 @@ function Form() {
         setTitle(e.target.value)
     }
     const getRecentThirtyDays = useCallback (async () => {  // 使外部func 可使用在 useEffect
-        const { data: result } = await axios.post('api/cosmos/siteinfo/getRecentThirtyDays', {
-            fId: "f001"
-        })
+        const { data: result } = await axios.get('api/getRecentThirtyDays')
         recentThirtyDays(result)
     }, [])
 
