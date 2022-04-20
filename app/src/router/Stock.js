@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Table from "../components/table/Table"
 
-function Home() {
+function Stock() {
     const [stockData, updateStockData] = useState([])
     const [PEratio, changePEratio] = useState(0)
     const [stockDataTable, updateStockTable] = useState([])
@@ -54,4 +54,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default Stock;
