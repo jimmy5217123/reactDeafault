@@ -3127,6 +3127,10 @@ app.get('/api/getRecentThirtyDays', (req, res) => {
   ]})
 })
 
+// app.get('openapi.twse.com.tw/v1/company/newlisting', (req, res) => {
+//     res.json()
+// })
+
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
