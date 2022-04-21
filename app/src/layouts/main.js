@@ -2,6 +2,7 @@ import Navbar from '../components/navbar/Navbar'
 import  { BrowserRouter, Route, Routes } from "react-router-dom";
 import Stock from '../router/Stock'
 import HighChartDemo from '../router/HighChartDemo'
+import Chat from '../router/Chat'
 // import About from '../router/About'
 
 function Main() {
@@ -14,6 +15,7 @@ function Main() {
                         <Routes>
                             <Route path="/" element={<Stock />}/>
                             <Route path="/highChartDemo" element={<HighChartDemo />}/>
+                            <Route path="/chat" element={<Chat />}/>
                             {/* <Route path="/about" element={<About />}/> */}
                         </Routes>
                     </div>

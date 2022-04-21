@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
+const SocketServer = require('ws').Server
 const app = express(),
-      bodyParser = require("body-parser");
-      port = 3000;
+      bodyParser = require("body-parser")
+      PORT = 3000
 
 app.use(bodyParser.json())
 
@@ -3132,6 +3133,23 @@ app.get('/api/getRecentThirtyDays', (req, res) => {
 // })
 
 
-app.listen(port, () => {
-    console.log(`Server listening on the port::${port}`);
-});
+const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`))
+
+const wss = new SocketServer({ server })
+wss.on('connection', ws => {
+
+    console.log('Client connected')
+
+    ws.on('message', data => {
+        let clients = wss.clients
+        
+        clients.forEach(client => {
+            client.send(JSON.stringify(data))
+        })
+
+        //當 WebSocket 的連線關閉時執行
+        ws.on('close', () => {
+            console.log('Close connected')
+        })
+    })
+})
