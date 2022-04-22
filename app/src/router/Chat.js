@@ -1,9 +1,10 @@
+import './Chat.css';
 import React, { useState, useEffect } from "react"
 
 const URL = 'ws://127.0.0.1:3000';
 
 const Chat =() => {
-	const [user, setUser] = useState('Tarzan')
+	const [user, setUser] = useState('qqq')
   	const [message, setMessage] = useState([])
   	const [messages, setMessages] = useState([])
   	const [ws, setWs] = useState(new WebSocket(URL))
@@ -11,18 +12,16 @@ const Chat =() => {
   	const submitMessage = (usr, msg) => {
   		const message = { user: usr, message: msg }
   		ws.send(JSON.stringify(message))
-  		setMessages([message, ...messages])
   	}
     
   	useEffect(() => {
 	    ws.onopen = () => {
-	      console.log('WebSocket Connected');
+	      console.log('WebSocket Connected')
 	    }
 
 	    ws.onmessage = (event) => {
 	      const message = JSON.parse(event.data)
 	      setMessages([message, ...messages])
-          console.log(messages)
 	    }
 
 	    return () => {
@@ -45,7 +44,6 @@ const Chat =() => {
 	            onChange={e => setUser(e.target.value)}
 	          />
 	        </label>
-
 	        <ul>
 	          {messages.reverse().map((message, index) =>
 	            <li key={index}>

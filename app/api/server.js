@@ -3128,13 +3128,10 @@ app.get('/api/getRecentThirtyDays', (req, res) => {
   ]})
 })
 
-// app.get('openapi.twse.com.tw/v1/company/newlisting', (req, res) => {
-//     res.json()
-// })
-
-
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`))
 
+
+// webSocket
 const wss = new SocketServer({ server })
 wss.on('connection', ws => {
 
@@ -3142,12 +3139,10 @@ wss.on('connection', ws => {
 
     ws.on('message', data => {
         let clients = wss.clients
-        
         clients.forEach(client => {
-            client.send(JSON.stringify(data))
+            client.send(JSON.stringify(JSON.parse(data)))
         })
 
-        //當 WebSocket 的連線關閉時執行
         ws.on('close', () => {
             console.log('Close connected')
         })
