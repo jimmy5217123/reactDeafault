@@ -1,7 +1,7 @@
 import './Chat.css';
 import React, { useState, useEffect } from "react"
 
-const URL = 'ws://127.0.0.1:3000';
+const URL = 'ws://reactbend.herokuapp.com:3000';
 
 const Chat =() => {
 	const [user, setUser] = useState('qqq')
