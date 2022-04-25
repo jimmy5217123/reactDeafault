@@ -45,7 +45,7 @@ const Chat =() => {
 	          />
 	        </label>
 	        <ul>
-	          {messages.reverse().map((message, index) =>
+	          {[...messages].reverse().map((message, index) =>
 	            <li key={index}>
 	              <b>{message.user}</b>: <em>{message.message}</em>
 	            </li>
