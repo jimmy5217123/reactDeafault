@@ -2,22 +2,30 @@ import './Chat.css';
 import React, { useState, useEffect } from "react"
 import { DateTime } from 'luxon';
 
-const URL = 'wss://reactbend.herokuapp.com';
-// const URL = 'ws://localhost:3000';
+// const URL = 'wss://reactbend.herokuapp.com';
+const URL = 'ws://localhost:3000';
 
 const Chat = () => {
-	const [user, setUser] = useState('qqq')
+	const [user, setUser] = useState('湯姆')
+	// const [userArr, setUserArr] = useState([])
   	const [message, setMessage] = useState([])
   	const [messages, setMessages] = useState([])
   	const [ws, setWs] = useState(new WebSocket(URL))
 	const [wsConnected, setWsConnected] = useState(false)
-	const [nowTime, upDatenowTime] = useState(DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss'))
 
   	const submitMessage = (usr, msg) => {
   		const message = { user: usr, message: msg }
   		ws.send(JSON.stringify(message))
   	}
-    
+	
+    // const userJoin = () => {
+	// 	setUserArr([...userArr, user])
+	// }
+
+	// useEffect(() => {
+		
+	// }, [userArr])
+
   	useEffect(() => {
 	    ws.onopen = () => {
 	      console.log('WebSocket Connected')
@@ -42,48 +50,46 @@ const Chat = () => {
 		if (wsConnected) {
 			timer = setInterval(() => {
 				const time = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss')
-				upDatenowTime(time)
 				ws.send(JSON.stringify({ time }))
-			}, 100000)
+				ws.onopen = () => {
+					console.log('WebSocket Connected')
+					setWsConnected(true)
+				}
+			}, 10000)
 		}
 		return () => clearInterval(timer)
 	}, [wsConnected, ws])
 
   	return (
 	    <div>
-	        <label htmlFor="user">
-	          Name :
-	          <input
-	            type="text"
-	            id="user"
-	            placeholder="User"
-	            value={user}
-	            onChange={e => setUser(e.target.value)}
-	          />
-	        </label>
-	        <ul>
-	          {[...messages].reverse().map((message, index) =>
-	            <li key={index}>
-	              <b>{message.user}</b>: <em>{message.message}</em> <span>{message.time}</span>
-	            </li>
-	          )}
-	        </ul>
+			<div style={{minHeight: 'calc(92vh - 40px)', maxHeight: 'calc(91vh - 50px)', overflowY: 'auto'}}>
+				<ul>
+				{[...messages].reverse().map((message, index) =>
+					<li key={index}>
+						<b>{message.user}</b>: <em>{message.message}</em>
+					</li>
+				)}
+				</ul>
+			</div>
 
-	        <form
-	          action=""
-	          onSubmit={e => {
-	            e.preventDefault()
+	        <form action="" onSubmit={e => {
+				e.preventDefault()
 	            submitMessage(user, message)
 	            setMessage([])
 	          }}
 	        >
-	          <input
-	            type="text"
-	            placeholder={'Type a message ...'}
-	            value={message}
-	            onChange={e => setMessage(e.target.value)}
-	          />
-	          <input type="submit" value={'Send'} disabled={!wsConnected}/>
+			<div style={{margin: '7px 0px'}}>
+				<label htmlFor="user">
+					在叫什麼 :
+					<input type="text" id="user" placeholder="User" value={user} onChange={e => setUser(e.target.value)}/>
+					{/* <button style={{margin: '0px 5px'}} type='button' onClick={() => userJoin()}>加入</button> */}
+					{/* <button>離開</button> */}
+				</label>
+			</div>
+			  <div style={{ display: 'flex'}}>
+				<input type="text" placeholder={'Type a message ...'} value={message} onChange={e => setMessage(e.target.value)} style={{width: '93%', height: '40px'}}/>
+				<button disabled={!wsConnected}>Enter to Send</button>
+			  </div>
 	        </form>
 	    </div>
   	)
