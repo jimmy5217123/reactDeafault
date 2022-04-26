@@ -1,13 +1,17 @@
 import './Chat.css';
 import React, { useState, useEffect } from "react"
+import { DateTime } from 'luxon';
 
-const URL = 'ws://reactbend.herokuapp.com:3000';
+const URL = 'wss://reactbend.herokuapp.com';
+// const URL = 'ws://localhost:3000';
 
-const Chat =() => {
+const Chat = () => {
 	const [user, setUser] = useState('qqq')
   	const [message, setMessage] = useState([])
   	const [messages, setMessages] = useState([])
   	const [ws, setWs] = useState(new WebSocket(URL))
+	const [wsConnected, setWsConnected] = useState(false)
+	const [nowTime, upDatenowTime] = useState(DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss'))
 
   	const submitMessage = (usr, msg) => {
   		const message = { user: usr, message: msg }
@@ -17,6 +21,7 @@ const Chat =() => {
   	useEffect(() => {
 	    ws.onopen = () => {
 	      console.log('WebSocket Connected')
+		  setWsConnected(true)
 	    }
 
 	    ws.onmessage = (event) => {
@@ -31,6 +36,18 @@ const Chat =() => {
 	      }
 	    }
   	}, [ws.onmessage, ws.onopen, ws.onclose, messages, ws])
+
+	useEffect(() => {
+		let timer
+		if (wsConnected) {
+			timer = setInterval(() => {
+				const time = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss')
+				upDatenowTime(time)
+				ws.send(JSON.stringify({ time }))
+			}, 100000)
+		}
+		return () => clearInterval(timer)
+	}, [wsConnected, ws])
 
   	return (
 	    <div>
@@ -47,7 +64,7 @@ const Chat =() => {
 	        <ul>
 	          {[...messages].reverse().map((message, index) =>
 	            <li key={index}>
-	              <b>{message.user}</b>: <em>{message.message}</em>
+	              <b>{message.user}</b>: <em>{message.message}</em> <span>{message.time}</span>
 	            </li>
 	          )}
 	        </ul>
@@ -66,7 +83,7 @@ const Chat =() => {
 	            value={message}
 	            onChange={e => setMessage(e.target.value)}
 	          />
-	          <input type="submit" value={'Send'} />
+	          <input type="submit" value={'Send'} disabled={!wsConnected}/>
 	        </form>
 	    </div>
   	)

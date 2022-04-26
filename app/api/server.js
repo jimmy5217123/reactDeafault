@@ -3138,13 +3138,17 @@ wss.on('connection', ws => {
     console.log('Client connected')
 
     ws.on('message', data => {
-        let clients = wss.clients
-        clients.forEach(client => {
-            client.send(JSON.stringify(JSON.parse(data)))
-        })
-
-        ws.on('close', () => {
-            console.log('Close connected')
-        })
+        const checkType = JSON.parse(data).time ? true : false
+        
+        if (!checkType) {
+            let clients = wss.clients
+            clients.forEach(client => {
+                client.send(JSON.stringify(JSON.parse(data)))
+            })
+    
+            ws.on('close', () => {
+                console.log('Close connected')
+            })
+        }
     })
 })
