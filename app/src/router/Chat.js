@@ -2,8 +2,10 @@ import './Chat.css';
 import React, { useState, useEffect } from "react"
 import { DateTime } from 'luxon';
 
-// const URL = 'wss://reactbend.herokuapp.com';
-const URL = 'ws://localhost:3000';
+const URL = 'wss://reactbend.herokuapp.com';
+// const URL = 'ws://localhost:3000';
+
+console.log(window.location.origin)
 
 const Chat = () => {
 	const [user, setUser] = useState('湯姆')
